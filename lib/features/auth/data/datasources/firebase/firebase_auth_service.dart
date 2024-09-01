@@ -6,6 +6,7 @@ class FirebaseAuthService implements AuthService {
   @override
   Future<void> signIn(String email, String password) {
     // Implémentation de la connexion via Firebase
+    print('Connexion via Firebase');
     throw UnimplementedError();
   }
 

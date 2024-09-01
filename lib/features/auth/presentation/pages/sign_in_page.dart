@@ -11,7 +11,7 @@ class SignInPage extends StatelessWidget {
     return Scaffold(
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: _authStateListener,
-        builder: (context, state) => SignInContent(),
+        builder: (context, state) => const SignInContent(),
       ),
     );
   }
