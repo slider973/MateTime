@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/auth_bloc.dart';
+import '../../bloc/auth_bloc.dart';
+
 
 class SignInForm extends StatefulWidget {
   @override
@@ -9,10 +10,27 @@ class SignInForm extends StatefulWidget {
 }
 
 class _SignInFormState extends State<SignInForm> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  late TextEditingController _emailController;
+  late TextEditingController _passwordController;
   bool _rememberMe = false;
   bool _obscurePassword = true;
+  // Add this constant for the development email
+  static const String devEmail = 'jonathan.lemaine@jo.com';
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the email controller with the dev email if in dev mode
+    _emailController =
+        TextEditingController(text: isInDevMode() ? devEmail : '');
+    _passwordController = TextEditingController(text: isInDevMode() ? '123456' : '');
+
+  }
+
+  // Add this method to check if the app is in dev mode
+  bool isInDevMode() {
+    return const bool.fromEnvironment('dart.vm.product') == false;
+  }
+
 
   @override
   void dispose() {
@@ -47,9 +65,9 @@ class _SignInFormState extends State<SignInForm> {
             const SizedBox(height: 32),
             _buildSignInButton(),
             const SizedBox(height: 24),
-            _buildForgotPasswordButton(),
-            const SizedBox(height: 16),
-            _buildSignUpSection(),
+            //    _buildForgotPasswordButton(),
+            //    const SizedBox(height: 16),
+            //   _buildSignUpSection(),
           ],
         ),
       ),
@@ -57,9 +75,9 @@ class _SignInFormState extends State<SignInForm> {
   }
 
   Widget _buildWelcomeText() {
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
+      children: [
         Text(
           'Bon retour !',
           style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
@@ -67,7 +85,8 @@ class _SignInFormState extends State<SignInForm> {
         SizedBox(height: 8),
         Text(
           'Utilisez la même méthode que vous\navez utilisée pour créer votre compte.',
-          style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.w600),
+          style: TextStyle(
+              fontSize: 16, color: Colors.black, fontWeight: FontWeight.w600),
         ),
       ],
     );
@@ -99,7 +118,8 @@ class _SignInFormState extends State<SignInForm> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Mot de passe', style: TextStyle(fontWeight: FontWeight.bold)),
+        const Text(
+            'Mot de passe', style: TextStyle(fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
         TextField(
           controller: _passwordController,
@@ -113,8 +133,10 @@ class _SignInFormState extends State<SignInForm> {
               borderSide: BorderSide.none,
             ),
             suffixIcon: IconButton(
-              icon: Icon(_obscurePassword ? Icons.visibility_off : Icons.visibility),
-              onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+              icon: Icon(
+                  _obscurePassword ? Icons.visibility_off : Icons.visibility),
+              onPressed: () =>
+                  setState(() => _obscurePassword = !_obscurePassword),
             ),
           ),
         ),
@@ -131,7 +153,8 @@ class _SignInFormState extends State<SignInForm> {
           child: Checkbox(
             value: _rememberMe,
             onChanged: (value) => setState(() => _rememberMe = value ?? false),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4)),
           ),
         ),
         const SizedBox(width: 8),
@@ -191,14 +214,16 @@ class _SignInFormState extends State<SignInForm> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text("Vous n'avez pas de compte ?", style: TextStyle(color: Colors.grey[600])),
+          Text("Vous n'avez pas de compte ?",
+              style: TextStyle(color: Colors.grey[600])),
           TextButton(
             onPressed: () {
               // Navigate to sign up page
             },
             child: const Text(
               "S'inscrire",
-              style: TextStyle(color: Color(0xFF6200EE), fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  color: Color(0xFF6200EE), fontWeight: FontWeight.bold),
             ),
           ),
         ],
